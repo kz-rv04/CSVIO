@@ -301,6 +301,8 @@ namespace KZ
             }
             #endregion
 
+            // 文字列操作処理系統
+            #region
             // 文字列を指定した終端文字列を切り捨て返す
             private static string SubstrData(string data, string EOF)
             {
@@ -322,18 +324,28 @@ namespace KZ
             // ignoreで指定された無視するcellであるかどうかを判定する
             private static bool IsIgnoreCell(string cell,string[] ignore)
             {
+                int p;
                 for (int i = 0; i < ignore.Length; i++) {
-                    if (cell[0].Equals(ignore) || cell.Equals(ignore)) {
+                    p = cell.IndexOf(ignore[i]);
+                    // cellの文字列の先頭にignoreと一致するものがあるかどうか判定
+                    if (p == 0) {
                         return true;
                     }
                 }
                 return false;
             }
+            #endregion
 
-            /// 編集中
-            public static List<List<string>> LoadMap(/*ref string[,] mapArray,*/ string text, string[] ignore, string EOF)
+            /// <summary>
+            /// csvのテキストからデータを文字列型2次元リストで取得する
+            /// </summary>
+            /// <param name="outData">読み出し先の2次元リスト</param>
+            /// <param name="text">csvの文字列</param>
+            /// <param name="ignore">無視する文字列</param>
+            /// <param name="EOF">ファイル終端識別子</param>
+            public static void LoadMap(ref List<List<string>> outData, string text, string[] ignore, string EOF)
             {
-                List<List<string>> outData = new List<List<string>>();
+                outData = new List<List<string>>();
 
                 // 終端文字列以下を切り捨てる
                 text = SubstrData(text, EOF);
@@ -352,16 +364,15 @@ namespace KZ
                     for (int j = 0; j < cells.Length; j++)
                     {
                         // 空のセルや無視する文字列、識別子は格納しない
-                        if (!String.IsNullOrEmpty(cells[j]) && IsIgnoreCell(cells[j], ignore))
+                        if (!String.IsNullOrEmpty(cells[j]) && !IsIgnoreCell(cells[j], ignore))
                         {
-                            UnityEngine.Debug.Log("addcell" + cells[j]);
                             line.Add(cells[j]);
                         }
                     }
-                    outData.Add(line);
+                    // 空列は飛ばす
+                    if(line.Count > 0)
+                        outData.Add(line);
                 }
-
-                return outData;
             }
             
         }

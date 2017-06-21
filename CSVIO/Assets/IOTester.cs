@@ -20,10 +20,15 @@ public class IOTester : MonoBehaviour {
 
     public string[,] array;
 
+    // csvデータ読み出し先
     public List<List<string>> data;
 
+    // ファイル読み込み時に無視する文字列または文字
     [SerializeField]
     private string[] ignoreItems;
+    // ファイル終端識別子
+    [SerializeField]
+    private string EOF_Descriptor;
 
 	// Use this for initialization
 	void Start () {
@@ -45,7 +50,7 @@ public class IOTester : MonoBehaviour {
     public void TestLoad()
     {
         //CSVIO.LoadMap(ref this.array, this.datapath);
-        data =  CSVIO.LoadMap(this.textAsset.text,this.ignoreItems,"END");
+        CSVIO.LoadMap(ref data,this.textAsset.text,this.ignoreItems,EOF_Descriptor);
 
         print("Loaded " + this.datapath);
 
@@ -118,7 +123,7 @@ public class IOTester : MonoBehaviour {
         print(stream);
         */
 
-        print("i =" + array.Count + "j = " + array[0].Count);
+        print("rows =" + array.Count + "cols = " + array[0].Count);
 
         for (int i = 0; i < array.Count; i++)
         {
