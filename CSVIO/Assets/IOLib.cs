@@ -322,13 +322,29 @@ namespace KZ
             }
 
             // ignoreで指定された無視するcellであるかどうかを判定する
-            private static bool IsIgnoreCell(string cell,string[] ignore)
+            private static bool IsIgnoreCell(string cell, string[] ignore)
             {
                 int p;
-                for (int i = 0; i < ignore.Length; i++) {
+                for (int i = 0; i < ignore.Length; i++)
+                {
                     p = cell.IndexOf(ignore[i]);
                     // cellの文字列の先頭にignoreと一致するものがあるかどうか判定
-                    if (p == 0) {
+                    if (p == 0)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            private static bool IsIgnoreCell(string cell, List<string> ignore)
+            {
+                int p;
+                for (int i = 0; i < ignore.Count; i++)
+                {
+                    p = cell.IndexOf(ignore[i]);
+                    // cellの文字列の先頭にignoreと一致するものがあるかどうか判定
+                    if (p == 0)
+                    {
                         return true;
                     }
                 }
@@ -370,11 +386,42 @@ namespace KZ
                         }
                     }
                     // 空列は飛ばす
-                    if(line.Count > 0)
+                    if (line.Count > 0)
                         outData.Add(line);
                 }
             }
-            
+            public static void LoadMap(ref List<List<string>> outData, string text, List<string> ignore, string EOF)
+            {
+                outData = new List<List<string>>();
+
+                // 終端文字列以下を切り捨てる
+                text = SubstrData(text, EOF);
+
+                //空白の文字列は格納しない
+                string[] lines = text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                //カンマ分けの準備(区分けする文字を設定する)
+                char[] spliter = new char[1] { ',' };
+
+                // カンマごとに区切ったデータを1行ずつリストに格納する
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    string[] cells = lines[i].Split(spliter);
+                    List<string> line = new List<string>();
+                    for (int j = 0; j < cells.Length; j++)
+                    {
+                        // 空のセルや無視する文字列、識別子は格納しない
+                        if (!String.IsNullOrEmpty(cells[j]) && !IsIgnoreCell(cells[j], ignore))
+                        {
+                            line.Add(cells[j]);
+                        }
+                    }
+                    // 空列は飛ばす
+                    if (line.Count > 0)
+                        outData.Add(line);
+                }
+            }
+
         }
 
     }

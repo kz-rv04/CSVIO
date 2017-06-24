@@ -18,14 +18,14 @@ public class IOTester : MonoBehaviour {
 
     //public TestEnum[,] array;
 
-    public string[,] array;
+    private string[,] array;
 
     // csvデータ読み出し先
-    public List<List<string>> data;
+    private List<List<string>> data;
 
     // ファイル読み込み時に無視する文字列または文字
     [SerializeField]
-    private string[] ignoreItems;
+    private List<string> ignoreItems;
     // ファイル終端識別子
     [SerializeField]
     private string EOF_Descriptor;
@@ -73,8 +73,9 @@ public class IOTester : MonoBehaviour {
     // 配列表示用関数
     void Show(string[,] array)
     {
-        string stream = "";
+
         /*
+        string stream = "";
         for (int i = 0; i < array.GetLength(0); i++)
         {
             for (int j = 0; j < array.GetLength(1); j++)
@@ -103,8 +104,8 @@ public class IOTester : MonoBehaviour {
     }
     void Show(List<List<string>> array)
     {
-        string stream = "";
         /*
+        string stream = "";
         for (int i = 0; i < array.GetLength(0); i++)
         {
             for (int j = 0; j < array.GetLength(1); j++)
