@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.IO;
 using System.Collections.Generic;
 
@@ -21,7 +22,7 @@ namespace KZ
             /// <param name="dataPath">読み込む外部データのパス</param>
             public static void LoadMap(ref int[,] mapArray, string path)
             {
-                StreamReader sr = new StreamReader(path);
+                StreamReader sr = new StreamReader(path,Encoding.ASCII);
                 //指定したパスから文字列を読み込み格納
                 string strStream = sr.ReadToEnd();
                 //空白の文字列は格納しない
@@ -55,7 +56,7 @@ namespace KZ
             public static void LoadMap(ref int[,] mapArray, UnityEngine.TextAsset textAsset)
             {
                 //空白の文字列は格納しない
-                string[] lines = textAsset.text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] lines = LoadTextAsset(textAsset).Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
                 //カンマ分けの準備(区分けする文字を設定する)
                 char[] spliter = new char[1] { ',' };
@@ -84,7 +85,7 @@ namespace KZ
             /// <param name="dataPath">読み込む外部データのパス</param>
             public static void LoadMap(ref byte[,] mapArray, string path)
             {
-                StreamReader sr = new StreamReader(path);
+                StreamReader sr = new StreamReader(path,Encoding.ASCII);
                 //指定したパスから文字列を読み込み格納
                 string strStream = sr.ReadToEnd();
                 //空白の文字列は格納しない
@@ -118,7 +119,7 @@ namespace KZ
             public static void LoadMap(ref byte[,] mapArray, UnityEngine.TextAsset textAsset)
             {
                 //空白の文字列は格納しない
-                string[] lines = textAsset.text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] lines = LoadTextAsset(textAsset).Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
                 //カンマ分けの準備(区分けする文字を設定する)
                 char[] spliter = new char[1] { ',' };
@@ -152,7 +153,7 @@ namespace KZ
             public static void LoadMap<T>(ref T[,] mapArray, string path)
                 where T : struct
             {
-                StreamReader sr = new StreamReader(path);
+                StreamReader sr = new StreamReader(path,Encoding.ASCII);
                 //指定したパスから文字列を読み込み格納
                 string strStream = sr.ReadToEnd();
                 //空白の文字列は格納しない
@@ -187,7 +188,7 @@ namespace KZ
             public static void LoadMap<T>(ref T[,] mapArray, UnityEngine.TextAsset textAsset)
             {
                 //空白の文字列は格納しない
-                string[] lines = textAsset.text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] lines = LoadTextAsset(textAsset).Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
                 //カンマ分けの準備(区分けする文字を設定する)
                 char[] spliter = new char[1] { ',' };
@@ -352,6 +353,17 @@ namespace KZ
             }
             #endregion
 
+            /// <summary>
+            /// TextAssetから文字列を読み込む関数
+            /// </summary>
+            /// <param name="textAsset"></param>
+            /// <returns>ASCII形式でエンコードされた文字列を返す</returns>
+            private static string LoadTextAsset(UnityEngine.TextAsset textAsset)
+            {
+                // バイト列でまず読み込み
+                byte[] bytes = textAsset.bytes;
+                return System.Text.Encoding.ASCII.GetString(bytes);
+            }
             /// <summary>
             /// csvのテキストからデータを文字列型2次元リストで取得する
             /// </summary>
