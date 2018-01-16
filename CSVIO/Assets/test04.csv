@@ -1,0 +1,13 @@
+$ROW1,#COL1,#COL2,#COL3,#COL4
+,,,,
+,hp,atk,def,spd
+$ROW2,TRUE,TRUE,TRUE,TRUE
+$ROW3,TRUE,TRUE,TRUE,TRUE
+$ROW4,TRUE,TRUE,TRUE,TRUE
+,END,,,
+,,,,
+,,,,
+,,,,
+1,2,3,4,
+5,6,7,8,
+9,10,11,12,

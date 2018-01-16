@@ -50,11 +50,14 @@ public class IOTester : MonoBehaviour {
     public void TestLoad()
     {
         //CSVIO.LoadMap(ref this.array, this.datapath);
-        CSVIO.LoadMap(ref data,this.textAsset.text,this.ignoreItems,EOF_Descriptor);
+        //CSVIO.LoadMap(ref data,this.textAsset.text,this.ignoreItems,EOF_Descriptor);
+
+        CSVIO.LoadMap<string>(ref data, this.textAsset, this.ignoreItems, EOF_Descriptor);
 
         print("Loaded " + this.datapath);
 
-        Show(data);
+        //Show(data);
+        Show<string>(data);
     }
 
 
@@ -102,37 +105,18 @@ public class IOTester : MonoBehaviour {
             }
         }
     }
-    void Show(List<List<string>> array)
+    void Show<T>(List<List<T>> array)
     {
-        /*
-        string stream = "";
-        for (int i = 0; i < array.GetLength(0); i++)
+        string str = string.Empty;
+        foreach (List<T> line in array)
         {
-            for (int j = 0; j < array.GetLength(1); j++)
+            foreach (T i in line)
             {
-                stream += array[i, j];
-                if (j != array.GetLength(1) - 1)
-                {
-                    stream += ",";
-                }
-                else
-                {
-                    stream += "\n";
-                }
+                str += i.ToString() + ',';
             }
+            str += '\n';
         }
-        print(stream);
-        */
-
-        print("rows =" + array.Count + "cols = " + array[0].Count);
-
-        for (int i = 0; i < array.Count; i++)
-        {
-            for (int j = 0; j < array[i].Count; j++)
-            {
-                print("array[" + i + "," + j + "] : " + array[i][j]);
-            }
-        }
+        print(str);
     }
     #endregion
     #endregion

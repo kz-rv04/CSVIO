@@ -1,9 +1,9 @@
 $ROW1,#COL1,#COL2,#COL3,#COL4
 ,,,,
 ,hp,atk,def,spd
-$ROW2,A,B,C,D
-$ROW3,B,C,D,A
-$ROW4,C,D,A,B
+$ROW2,A,B,C,D,
+$ROW3,B,C,D,A,
+$ROW4,C,D,A,B,
 ,END,,,
 ,,,,
 ,,,,
