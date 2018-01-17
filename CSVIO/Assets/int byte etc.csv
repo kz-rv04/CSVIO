@@ -3,7 +3,7 @@ $ROW1,#COL1,#COL2,#COL3,#COL4
 ,hp,atk,def,spd
 $ROW2,1,2,3,4
 $ROW3,5,6,7,8
-$ROW4,9,10,11,12
+$ROW4,9,10,256,256
 ,END,,,
 ,,,,
 ,,,,

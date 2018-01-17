@@ -6,7 +6,8 @@ public enum TestEnum
 {
     A,
     B,
-    C
+    C,
+    D
 }
 public class IOTester : MonoBehaviour {
 
@@ -15,13 +16,11 @@ public class IOTester : MonoBehaviour {
     public string fileName;
 
     public TextAsset textAsset;
-
-    //public TestEnum[,] array;
-
-    private string[,] array;
-
+    
     // csvデータ読み出し先
-    private List<List<string>> data;
+    private List<List<float>> data;
+    // csvデータ読み出し先
+    private float[,] array;
 
     // ファイル読み込み時に無視する文字列または文字
     [SerializeField]
@@ -38,72 +37,43 @@ public class IOTester : MonoBehaviour {
 
     public void TestSave()
     {
-        Init();
+        datapath = Application.dataPath + "/" + fileName;
 
-        Show(this.array);
-
-        //CSVIO.SaveMap(ref this.array, this.datapath);
+        CSVIO.SaveMap<float>(ref this.data, this.datapath);
 
         print("Saved " + this.datapath);
     }
 
     public void TestLoad()
     {
-        //CSVIO.LoadMap(ref this.array, this.datapath);
-        //CSVIO.LoadMap(ref data,this.textAsset.text,this.ignoreItems,EOF_Descriptor);
-
-        CSVIO.LoadMap<string>(ref data, this.textAsset, this.ignoreItems, EOF_Descriptor);
+        // ファイルパス指定により読み込み
+        //CSVIO.LoadMap<int>(ref data,this.datapath,this.ignoreItems,EOF_Descriptor);
+        // TextAssetから読み込み
+        //CSVIO.LoadMap<float>(ref data, this.textAsset, this.ignoreItems, EOF_Descriptor);
+        // 配列へ読み込み path指定、TextAssetからの読み込みに対応
+        CSVIO.LoadMap(ref array, this.textAsset, EOF_Descriptor);
 
         print("Loaded " + this.datapath);
-
-        //Show(data);
-        Show<string>(data);
+        //配列内のデータ表示
+        Show(array);
+        //リスト内のデータ表示
+        //Show<float>(this.data);
     }
 
-
-    #region
-    void Init()
-    {
-        for (int i = 0; i < array.GetLength(0); i++)
-        {
-            for (int j = 0; j < array.GetLength(1); j++)
-            {
-                //array[i, j] = (TestEnum)Random.Range(0, 3);
-            }
-        }
-    }
     #region
     // 配列表示用関数
-    void Show(string[,] array)
+    void Show<T>(T[,] array)
     {
-
-        /*
-        string stream = "";
+        string str = string.Empty;
         for (int i = 0; i < array.GetLength(0); i++)
         {
             for (int j = 0; j < array.GetLength(1); j++)
             {
-                stream += array[i, j];
-                if (j != array.GetLength(1) - 1)
-                {
-                    stream += ",";
-                }
-                else
-                {
-                    stream += "\n";
-                }
+                str += array[i, j].ToString() + ",";
             }
+            str += "\n";
         }
-        print(stream);
-        */
-
-        for (int i = 0; i < array.GetLength(0); i++)
-        {
-            for (int j = 0; j < array.GetLength(1); j++)
-            {
-                print("array[" + i + "," + j + "] : " + array[i, j]);
-            }
-        }
+        print(str);
     }
     void Show<T>(List<List<T>> array)
     {
@@ -118,6 +88,5 @@ public class IOTester : MonoBehaviour {
         }
         print(str);
     }
-    #endregion
     #endregion
 }
